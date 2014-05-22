@@ -1,13 +1,17 @@
 // ==UserScript==
 // @id             oopsendimage2
 // @name           OOP Send Imange
-// @version        2.0.1
+// @version        2.0.11
 // @namespace      oop
 // @author         TotoZeRigolo
 // @description    
 // @include        about:addons
 // @run-at         document-end
 // @updateURL	   https://raw.githubusercontent.com/OOPmaster/OOPSendImage/master/oopsendimage.user.js
+// @include         *
+// @exclude         file://*
+// @grant           GM_openInTab
+// @grant       	GM_xmlhttpRequest
 // ==/UserScript==
 
 
