@@ -1,7 +1,7 @@
 // ==UserScript==
 // @id             oopsendimage2
 // @name           OOP Send Imange
-// @version        2.0.11
+// @version        2.1.0
 // @namespace      oop
 // @author         TotoZeRigolo
 // @description    
@@ -17,7 +17,7 @@
 
 //console.debug( 'OOP' );
 if (!("contextMenu" in document.documentElement &&
-      "HTMLMenuItemElement" in window)) return;
+      "HTMLMenuItemElement" in window)) exit;
 
 var bodyoop = document.body;
 bodyoop.addEventListener("contextmenu", initMenuOop, false);
@@ -47,20 +47,12 @@ hiHrTDy207Uo3NYQPr1q5eQ565+vCuaJaJUEUKDSnmTuvgGtHjEiIxdscOS\
 YW3mvyja6GvIr8rFM5o6RRGJ7UWvT8XDFPWBMz4O5/OOqhW7D+9WOAqD+A3\
 6F6JKUm0x5AAAAAElFTkSuQmCC";
 
+var oopTags = [ 'swimsuit','bikini','leotard','bondage','zentai','nude','other' ];
+
 var menuoop = bodyoop.appendChild(document.createElement("menu"));
-menuoop.outerHTML = '<menu id="userscript-send-to-oop" type="context">\
-                    <menu label="Send image to OOP 2"\
-                              icon="'+oopIcon+'">\
-	<menuitem label="Swimsuit" id="link-send-to-oop-swimsuit" ></menuitem>\
-	<menuitem label="Bikini" id="link-send-to-oop-bikini" ></menuitem>\
-	<menuitem label="Leotard" id="link-send-to-oop-leotard" ></menuitem>\
-	<menuitem label="Bondage" id="link-send-to-oop-bondage" ></menuitem>\
-	<menuitem label="Zentai" id="link-send-to-oop-zentai" ></menuitem>\
-	<menuitem label="Nu" id="link-send-to-oop-nude" ></menuitem>\
-	<menuitem label="Other" id="link-send-to-oop-other" ></menuitem>\
-</menu>\
-<!-- <menuitem label="Swimsuit" id="link-send-to-oop" ></menuitem> -->\
-						<menuitem id="link-send-to-google" label="Search Google with this image"\
+var oopMenus = '<menu id="userscript-send-to-oop" type="context">\
+                    <menu label="Send image to OOP" id="oop_tags_menu" icon="'+oopIcon+'"></menu>\
+					<menuitem id="link-send-to-google" label="Search Google with this image"\
                               icon="data:image/png;base64,\
 iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz\
 AAAK6wAACusBgosNWgAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAEl\
@@ -70,15 +62,30 @@ FkR5ijNICLMzTF31hOHnr38MHGxMDJlhMgwv3vxkWL7jJYpaJmzu0lTigWtmYGBg+PHrH8P0VU8Y\
 tJV5MNRiNYCfmxmuGQZ+/PrHwMmOqRyrAX///WfgYEOV4mBjwjAUpwHHL31iyA6XgRvCwcbEkBUm\
 w3DuxmcMtVgDkYONicHLVoTBSJOXgYONieHHz38Ml+98Ydh88DXDtx//CBtACmBiYGCYS4H+OYyU\
 5kasgUgKAADN8WLFzlj9rgAAAABJRU5ErkJggg=="></menuitem>\
-						<menuitem id="link-oop-fb-all" label="FB select all"></menuitem>\
-						<menuitem id="link-oop-if-all" label="imageFap select all"></menuitem>\
-						<menuitem id="link-oop-ic-all" label="imageChili select all"></menuitem>\
-						<menuitem id="link-oop-all-link" label="Select all imageLinks"></menuitem>\
-						<menuitem id="link-oop-galerie-link" label="Send gallerie link"></menuitem>\
-						<menuitem id="link-oop-test" label="Test"></menuitem>\
+					<menuitem id="link-oop-fb-all" label="FB select all"></menuitem>\
+					<menuitem id="link-oop-if-all" label="imageFap select all"></menuitem>\
+					<menuitem id="link-oop-ic-all" label="imageChili select all"></menuitem>\
+					<menuitem id="link-oop-all-link" label="Select all imageLinks"></menuitem>\
+					<menuitem id="link-oop-galerie-link" label="Send gallerie link"></menuitem>\
+					<menuitem id="link-oop-test" label="Test"></menuitem>\
                   </menu>';
 
+menuoop.outerHTML = oopMenus;
+
+var oop_tags_menu = document.getElementById( 'oop_tags_menu' );
+
+for( var i=0;i< oopTags.length; i++ )
+{
+	var tag = oopTags[i];
+	var item = document.createElement('menuitem');
+	item.label = tag;
+	item.addEventListener('click', ( function( t ){ return function( e ){oopClick( e, t );} } )( tag ) );
+	oop_tags_menu.appendChild( item );
+	
+	//oopMenus += '<menuitem label="'+oopTags[i]+'" onclick="oop.oopClick(\''+oopTags[i]+'\')" ></menuitem>';
+}
 //document.querySelector("#link-send-to-oop").addEventListener("click", searchImageOop, false);
+/*
 document.querySelector("#link-send-to-oop-swimsuit").addEventListener("click", searchImageOopSwimsuit, false);
 document.querySelector("#link-send-to-oop-bikini").addEventListener("click", searchImageOopBikini, false);
 document.querySelector("#link-send-to-oop-leotard").addEventListener("click", searchImageOopLeotard, false);
@@ -86,7 +93,7 @@ document.querySelector("#link-send-to-oop-bondage").addEventListener("click", se
 document.querySelector("#link-send-to-oop-nude").addEventListener("click", searchImageOopNude, false);
 document.querySelector("#link-send-to-oop-zentai").addEventListener("click", searchImageOopZentai, false);
 document.querySelector("#link-send-to-oop-other").addEventListener("click", searchImageOopOther, false);
-
+*/
 document.querySelector("#link-send-to-google").addEventListener("click", searchImage, false);
 
 document.querySelector("#link-oop-test").addEventListener("click", oopTest, false);
@@ -119,32 +126,16 @@ function initMenuOop(aEvent) {
   } else {
     bodyoop.removeAttribute("contextmenu");
   }
-  //urlOOP = node.src;
-  /*
-  var items = document.getElementById("userscript-send-to-oop").childNodes;
-  for( var i=0;i<items.length;i++)
-  {
-	  if( items[i].type == 'menuitem' )
-	  {
-		if ( node.localName == "img"  )
-			items[i].setAttribute("imageURL", node.src);
-		else
-			items[i].removeAttribute("imageURL");
-	  }
-	    
-	    var sitems = items[i].childNodes;
-	    
-		for( var j=0;j<sitems.length;j++)
-		{
-			if( sitems[j].type == 'menuitem' )
-			  {
-				if ( node.localName == "img"  )
-					sitems[i].setAttribute("imageURL", node.src);
-				else
-					sitems[i].removeAttribute("imageURL");
-			  }
-		}
-  }*/
+  
+}
+
+function oopClick( e, tag )
+{
+	/*console.log( e );
+	console.log( tag );
+	alert( e, tag );
+	*/
+	searchImageOop(e, tag);
 }
 
 function getOOPSrc( node, niv )
@@ -188,7 +179,7 @@ function addParamsToForm(aForm, aKey, aValue) {
   hiddenField.setAttribute("value", aValue);
   aForm.appendChild(hiddenField);
 }
-
+/*
 function searchImageOopSwimsuit(aEvent){ searchImageOop(aEvent, 'swimsuit'); }
 function searchImageOopBikini(aEvent){ searchImageOop(aEvent, 'bikini'); }
 function searchImageOopLeotard(aEvent){ searchImageOop(aEvent, 'leotard'); }
@@ -196,7 +187,7 @@ function searchImageOopBondage(aEvent){ searchImageOop(aEvent, 'bondage'); }
 function searchImageOopNude(aEvent){ searchImageOop(aEvent, 'nude'); }
 function searchImageOopZentai(aEvent){ searchImageOop(aEvent, 'zentai'); }
 function searchImageOopOther(aEvent){ searchImageOop(aEvent, 'other'); }
-
+*/
 function searchImageOop(aEvent, tag) {
   // Executed when user click on menuitem
   // aEvent.target is the <menuitem> element
@@ -207,35 +198,11 @@ function searchImageOop(aEvent, tag) {
   
   var imageURL = urlOOP;
   
+  //console.log( urlOOP );
+  
   openOOPdiv( imageURL, tag );
   return true;
-  /*
-  if (imageURL.indexOf("data:") == 0) {
-    var base64Offset = imageURL.indexOf(",");
-    if (base64Offset != -1) {
-      var inlineImage = imageURL.substring(base64Offset + 1)
-                                 .replace(/\+/g, "-")
-                                 .replace(/\//g, "_")
-                                 .replace(/\./g, "=");
-
-      var form = document.createElement("form");
-      form.setAttribute("method", "POST");
-      form.setAttribute("action", "//db.oop.cx/upload");
-      form.setAttribute("enctype", "multipart/form-data");
-      form.setAttribute("target", "_blank");
-      addParamsToForm(form, "image_content", inlineImage);
-      addParamsToForm(form, "filename", "");
-      addParamsToForm(form, "image_url", "");
-      body.appendChild(form);
-      form.submit();
-    }
-  } else {
-    GM_openInTab("http://db.oop.cx/uploadurl?image_url="+encodeURIComponent(imageURL) +
-                 "&image_ref="+encodeURIComponent(document.location)+
-                 '&tag='+tag
-                 );
-  }
-  */
+  
 }
 
 function searchImage(aEvent) {
